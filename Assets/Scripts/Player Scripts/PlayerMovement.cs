@@ -28,8 +28,10 @@ public class PlayerMovement : MonoBehaviour
         {
             myBody.linearVelocity = new Vector2(-moveSpeed, myBody.linearVelocity.y);
         }
+    }
 
-
+    public void PlatformMove(float x) { 
+        myBody.linearVelocity = new Vector2(x, myBody.linearVelocity.y);
     }
 
 }

@@ -37,4 +37,63 @@ public class PlatformScript : MonoBehaviour
 
     }
 
+    void BreakableDeactivate()
+    {
+        Invoke("DeactiveGameObject", 0.35f);
+    }
+
+    void DeactiveGameObject()
+    {
+        SoundManager.instance.IceBreakSound();
+        gameObject.SetActive(false);
+    }
+
+    void OnTriggerEnter2D(Collider2D target)
+    {
+        if (target.gameObject.tag == "Player")
+        {
+            if (is_Spike)
+            {
+                target.gameObject.transform.position = new Vector2(1000f, 1000f);
+                SoundManager.instance.GameOverSound();
+                GameManager.instance.RestartGame();
+            }
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D target)
+    {
+        if (target.gameObject.tag == "Player")
+        {
+            if (is_Breakable)
+            {
+                anim.Play("Break");
+                SoundManager.instance.LandSound();
+            }
+            if (is_Platform)
+            {
+                SoundManager.instance.LandSound();
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D target)
+    {
+        if (target.gameObject.tag == "Player")
+        {
+            if (moving_Platform_Left)
+            {
+                target.gameObject.GetComponent<PlayerMovement>().PlatformMove(-1f);
+            }
+            if (moving_Platform_Right)
+            {
+                target.gameObject.GetComponent<PlayerMovement>().PlatformMove(1f);
+            }
+        }
+  
+    }
+
+
+
+
 }
